@@ -11,9 +11,6 @@ local astro_plugins = {
   -- Popup API
   ["nvim-lua/popup.nvim"] = {},
 
-  -- Reloader
-  ["famiu/nvim-reload"] = { module = "nvim-reload" },
-
   -- Indent detection
   ["Darazaki/indent-o-matic"] = {
     event = "BufReadPost",
