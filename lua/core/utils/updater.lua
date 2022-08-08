@@ -32,6 +32,19 @@ end
 
 local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 
+function astronvim.updater.reload()
+  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd "LspStop" end
+  local reload_module = require("plenary.reload").reload_module
+  reload_module("user", false)
+  reload_module("configs", false)
+  reload_module("default_theme", false)
+  reload_module("core", false)
+  reload_module("which-key", false) -- need to reload which-key manually
+  reload_module("gitsigns", false) -- need to reload which-key manually
+  vim.cmd "luafile $MYVIMRC"
+  vim.cmd "doautocmd VimEnter"
+end
+
 function astronvim.updater.update()
   if not git.is_repo() then
     astronvim.notify("Updater not available for non-git installations", "error")
@@ -150,5 +163,8 @@ function astronvim.updater.update()
       vim.list_extend(summary, git.pretty_changelog(changelog))
     end
     astronvim.echo(summary)
+
+    astronvim.updater.reload()
+    vim.cmd "PackerSync"
   end
 end
